@@ -50,3 +50,4 @@ run/
 mineshot.iml
 gradle.properties
 classes/
+*.iml

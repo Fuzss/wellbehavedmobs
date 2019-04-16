@@ -2,113 +2,104 @@ package fuzs.gsds;
 
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IRangedAttackMob;
-import net.minecraft.entity.ai.EntityAIBase;
+import net.minecraft.entity.ai.EntityAIAttackRangedBow;
 import net.minecraft.entity.monster.EntityMob;
-import net.minecraft.item.ItemBow;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.MathHelper;
 
-public class EntityAIAttackRangedEasyBow<T extends EntityMob & IRangedAttackMob> extends EntityAIBase
+public class EntityAIAttackRangedEasyBow<T extends EntityMob & IRangedAttackMob> extends EntityAIAttackRangedBow
 {
+    /**
+     * The entity (as a RangedAttackMob) the AI instance has been applied to.
+     */
     private final T entity;
-    private final double moveSpeedAmp;
-    private int attackCooldown;
-    private final float maxAttackDistance;
-    private int attackTime = -1;
-    private int seeTime;
 
-    EntityAIAttackRangedEasyBow(T attacker, double movespeed, int p_i47515_4_, float maxAttackDistanceIn)
+    /**
+     * A decrementing tick that spawns a ranged attack once this value reaches 0. It is then set back to the
+     * maxattackTime.
+     */
+    private int attackTime;
+    private final double moveSpeedAmp;
+    private int seeTime;
+    private int field_96561_g;
+
+    /**
+     * The maximum time the AI has to wait before peforming another ranged attack.
+     */
+    private int maxattackTime;
+    private float field_96562_i;
+    private float maxAttackDistance;
+
+    EntityAIAttackRangedEasyBow(T attacker, double movespeed, int p_i1650_4_, int maxattackTime, float maxAttackDistanceIn)
     {
+        super(attacker, movespeed, p_i1650_4_, maxAttackDistanceIn);
+        this.attackTime = -1;
         this.entity = attacker;
         this.moveSpeedAmp = movespeed;
-        this.attackCooldown = p_i47515_4_;
+        this.field_96561_g = p_i1650_4_;
+        this.maxattackTime = maxattackTime;
+        this.field_96562_i = maxAttackDistanceIn;
         this.maxAttackDistance = maxAttackDistanceIn * maxAttackDistanceIn;
         this.setMutexBits(3);
     }
 
     /**
-     * Returns whether the EntityAIBase should begin execution.
+     * Updates the task
      */
-    public boolean shouldExecute()
+    @Override
+    public void updateTask()
     {
-        return this.entity.getAttackTarget() != null && this.isBowInMainhand();
-    }
-
-    private boolean isBowInMainhand()
-    {
-        return !this.entity.getHeldItemMainhand().isEmpty() && this.entity.getHeldItemMainhand().getItem() instanceof ItemBow;
-    }
-
-    /**
-     * Returns whether an in-progress EntityAIBase should continue executing
-     */
-    public boolean shouldContinueExecuting()
-    {
-        return (this.shouldExecute() || !this.entity.getNavigator().noPath()) && this.isBowInMainhand();
-    }
-
-    /**
-     * Execute a one shot task or start executing a continuous task
-     */
-    public void startExecuting()
-    {
-        super.startExecuting();
-        ((IRangedAttackMob)this.entity).setSwingingArms(true);
-    }
-
-    /**
-     * Reset the task's internal state. Called when this task is interrupted by another one
-     */
-    public void resetTask()
-    {
-        super.resetTask();
-        ((IRangedAttackMob)this.entity).setSwingingArms(false);
-        this.seeTime = 0;
-        this.attackTime = -1;
-        this.entity.resetActiveHand();
-    }
-
-    /**
-     * Keep ticking a continuous task that has already been started
-     */
-    public void updateTask() {
         EntityLivingBase entitylivingbase = this.entity.getAttackTarget();
-        if (entitylivingbase != null) {
+        
+        if (entitylivingbase == null) {
+            return;
+        }
+        
+        double d0 = this.entity.getDistanceSq(entitylivingbase.posX, entitylivingbase.getEntityBoundingBox().minY, entitylivingbase.posZ);
+        boolean flag = this.entity.getEntitySenses().canSee(entitylivingbase);
 
-            double d0 = this.entity.getDistanceSq(entitylivingbase.posX, entitylivingbase.getEntityBoundingBox().minY, entitylivingbase.posZ);
-            boolean flag = this.entity.getEntitySenses().canSee(entitylivingbase);
+        if (flag)
+        {
+            ++this.seeTime;
+        }
+        else
+        {
+            this.seeTime = 0;
+        }
 
-            if (flag != this.seeTime > 0) {
-                this.seeTime = 0;
+        if (d0 <= (double)this.maxAttackDistance && this.seeTime >= 20)
+        {
+            this.entity.getNavigator().clearPath();
+        }
+        else
+        {
+            this.entity.getNavigator().tryMoveToEntityLiving(entitylivingbase, this.moveSpeedAmp);
+        }
+
+        this.entity.getLookHelper().setLookPositionWithEntity(entitylivingbase, 30.0F, 30.0F);
+
+        if (--this.attackTime == 0)
+        {
+            if (d0 > (double)this.maxAttackDistance || !flag)
+            {
+                this.entity.resetActiveHand();
+                return;
             }
 
-            if (flag) {
-                ++this.seeTime;
-            } else {
-                --this.seeTime;
-            }
-
-            if (d0 <= (double)this.maxAttackDistance && this.seeTime >= 20) {
-                this.entity.getNavigator().clearPath();
-            } else {
-                this.entity.getNavigator().tryMoveToEntityLiving(entitylivingbase, this.moveSpeedAmp);
-            }
-
-            this.entity.getLookHelper().setLookPositionWithEntity(entitylivingbase, 30.0F, 30.0F);
-            if (this.entity.isHandActive()) {
-                if (!flag && this.seeTime < -60) {
-                    this.entity.resetActiveHand();
-                } else if (flag) {
-                    int i = this.entity.getItemInUseMaxCount();
-                    if (i >= 20) {
-                        this.entity.resetActiveHand();
-                        this.entity.attackEntityWithRangedAttack(entitylivingbase, ItemBow.getArrowVelocity(i));
-                        this.attackTime = this.attackCooldown;
-                    }
-                }
-            } else if (--this.attackTime <= 0 && this.seeTime >= -60) {
-                this.entity.setActiveHand(EnumHand.MAIN_HAND);
-            }
-
+            float f = MathHelper.sqrt(d0) / this.field_96562_i;
+            float lvt_5_1_ = MathHelper.clamp(f, 0.1F, 1.0F);
+            this.entity.attackEntityWithRangedAttack(entitylivingbase, lvt_5_1_);
+            this.attackTime = MathHelper.floor(f * (float)(this.maxattackTime - this.field_96561_g) + (float)this.field_96561_g);
+            this.entity.resetActiveHand();
+        }
+        else if (this.attackTime < 0)
+        {
+            float f2 = MathHelper.sqrt(d0) / this.field_96562_i;
+            this.attackTime = MathHelper.floor(f2 * (float)(this.maxattackTime - this.field_96561_g) + (float)this.field_96561_g);
+        }
+        else if (!this.entity.isHandActive() && this.attackTime <= 20)
+        {
+            this.entity.setActiveHand(EnumHand.MAIN_HAND);
         }
     }
 }
