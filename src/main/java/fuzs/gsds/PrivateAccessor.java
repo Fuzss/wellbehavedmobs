@@ -9,14 +9,8 @@
  */
 package fuzs.gsds;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.ActiveRenderInfo;
-import net.minecraft.entity.ai.EntityAIAttackRanged;
 import net.minecraft.entity.ai.EntityAIAttackRangedBow;
 import net.minecraft.entity.monster.AbstractSkeleton;
-import net.minecraft.entity.monster.EntitySnowman;
-import net.minecraft.entity.passive.EntityAnimal;
-import net.minecraft.util.Timer;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
