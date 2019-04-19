@@ -1,6 +1,7 @@
 package fuzs.gsds;
 
 import fuzs.gsds.config.ConfigHandler;
+import fuzs.gsds.util.PrivateAccessor;
 import net.minecraft.entity.ai.EntityAIAttackRangedBow;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.ai.EntityAITasks;
@@ -16,15 +17,24 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import java.io.File;
 
-@Mod(modid = GoodSkeletonsDontStrafe.MODID, name = GoodSkeletonsDontStrafe.NAME, version = GoodSkeletonsDontStrafe.VERSION, acceptedMinecraftVersions = GoodSkeletonsDontStrafe.RANGE, acceptableRemoteVersions = "*", guiFactory = GoodSkeletonsDontStrafe.GUI)
+@Mod(
+        modid = GoodSkeletonsDontStrafe.MODID,
+        name = GoodSkeletonsDontStrafe.NAME,
+        version = GoodSkeletonsDontStrafe.VERSION,
+        acceptedMinecraftVersions = GoodSkeletonsDontStrafe.RANGE,
+        acceptableRemoteVersions = "*",
+        guiFactory = GoodSkeletonsDontStrafe.GUI,
+        dependencies = GoodSkeletonsDontStrafe.DEPENDENCIES
+)
 public class GoodSkeletonsDontStrafe implements PrivateAccessor {
 
-    public static final String MODID = "gsds";
+    public static final String MODID = "goodskeletonsdontstrafe";
     public static final String NAME = "Good Skeletons Don't Strafe";
-    public static final String VERSION = "1.0.2";
-    public static final String RANGE = "[1.12,1.12.2]";
+    public static final String VERSION = "1.0.3";
+    public static final String RANGE = "[1.12.2]";
     public static final String GUI = "fuzs.gsds.config.GuiFactory";
     public static final String SLUG = "skeletonsdontstrafe";
+    public static final String DEPENDENCIES = "required-after:forge@[14.23.5.2779,)";
 
     @EventHandler
     public void preinit(FMLPreInitializationEvent event) {

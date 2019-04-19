@@ -7,7 +7,7 @@
 **    May you find forgiveness for yourself and forgive others.
 **    May you share freely, never taking more than you give.
  */
-package fuzs.gsds;
+package fuzs.gsds.util;
 
 import net.minecraft.entity.ai.EntityAIAttackRangedBow;
 import net.minecraft.entity.monster.AbstractSkeleton;

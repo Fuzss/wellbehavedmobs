@@ -1,9 +1,9 @@
 [
 {
-  "modid": "gsds",
+  "modid": "goodskeletonsdontstrafe",
   "name": "Good Skeletons Don't Strafe",
   "description": "Removes the very annoying and buggy strafing behaviour from skeletons when attacking.",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "url": "https://minecraft.curseforge.com/projects/good-skeletons-dont-strafe",
   "authorList": ["Fuzs"]
 }
