@@ -4,7 +4,7 @@ buildscript {
         maven { url = "https://files.minecraftforge.net/maven" }
     }
     dependencies {
-        classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
+        classpath 'net.minecraftforge.gradle:ForgeGradle:2.2-SNAPSHOT'
     }
 }
 apply plugin: 'net.minecraftforge.gradle.forge'
@@ -33,7 +33,7 @@ minecraft {
 }
 
 jar {
-    archiveName "${mod_name.replaceAll("[^a-zA-Z[\\\\s]]", "")}-v${mod_version}-${mc_version}.jar" // use archiveFileName in the future
+    archiveName "${mod_name.replaceAll("[^a-zA-Z[\\s]]", "")}-v${mod_version}-${mc_version}.jar" // use archiveFileName in the future
 }
 
 processResources {

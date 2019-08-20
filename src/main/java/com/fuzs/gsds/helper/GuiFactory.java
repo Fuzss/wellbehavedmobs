@@ -10,13 +10,23 @@ import net.minecraftforge.common.config.ConfigElement;
 import net.minecraftforge.fml.client.IModGuiFactory;
 import net.minecraftforge.fml.client.config.GuiConfig;
 
-@SuppressWarnings("unused")
+@SuppressWarnings({"deprecation", "unused", "WeakerAccess"})
 public class GuiFactory implements IModGuiFactory {
 
     public void initialize(Minecraft minecraftInstance) {
     }
 
+    @Override
+    public Class<? extends GuiScreen> mainConfigGuiClass() {
+        return ConfigGui.class;
+    }
+
     public Set<RuntimeOptionCategoryElement> runtimeGuiCategories() {
+        return null;
+    }
+
+    @Override
+    public RuntimeOptionGuiHandler getHandlerFor(RuntimeOptionCategoryElement element) {
         return null;
     }
 
@@ -28,9 +38,9 @@ public class GuiFactory implements IModGuiFactory {
         return new ConfigGui(parentScreen);
     }
 
-    private static class ConfigGui extends GuiConfig {
+    public static class ConfigGui extends GuiConfig {
 
-        private ConfigGui(GuiScreen parentScreen) {
+        public ConfigGui(GuiScreen parentScreen) {
             super(parentScreen, new ConfigElement(ConfigHandler.config.getCategory(ConfigHandler.categoryGeneral)).getChildElements(),
                     GoodSkeletonsDontStrafe.MODID, false, false,
                     GuiConfig.getAbridgedConfigPath(ConfigHandler.config.toString()));

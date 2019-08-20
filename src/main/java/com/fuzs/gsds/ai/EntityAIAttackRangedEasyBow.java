@@ -2,17 +2,16 @@ package com.fuzs.gsds.ai;
 
 import com.fuzs.gsds.handler.ConfigHandler;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.IRangedAttackMob;
 import net.minecraft.entity.ai.EntityAIAttackRangedBow;
-import net.minecraft.entity.monster.EntityMob;
+import net.minecraft.entity.monster.AbstractSkeleton;
 import net.minecraft.item.ItemBow;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.MathHelper;
 
-public class EntityAIAttackRangedEasyBow<T extends EntityMob & IRangedAttackMob> extends EntityAIAttackRangedBow<T> {
+public class EntityAIAttackRangedEasyBow extends EntityAIAttackRangedBow {
 
     // The entity (as a RangedAttackMob) the AI instance has been applied to.
-    private final T entity;
+    private final AbstractSkeleton entity;
     // A decrementing tick that spawns a ranged attack once this value reaches 0. It is then set back to the maxattackTime.
     private int attackTime;
     private final double moveSpeedAmp;
@@ -23,7 +22,7 @@ public class EntityAIAttackRangedEasyBow<T extends EntityMob & IRangedAttackMob>
     private float field_96562_i;
     private float maxAttackDistance;
 
-    public EntityAIAttackRangedEasyBow(T attacker, double movespeed, int p_i1650_4_, int maxattackTime, float maxAttackDistanceIn) {
+    public EntityAIAttackRangedEasyBow(AbstractSkeleton attacker, double movespeed, int p_i1650_4_, int maxattackTime, float maxAttackDistanceIn) {
         super(attacker, movespeed, p_i1650_4_, maxAttackDistanceIn);
         this.attackTime = -1;
         this.entity = attacker;
@@ -71,7 +70,7 @@ public class EntityAIAttackRangedEasyBow<T extends EntityMob & IRangedAttackMob>
         }
 
         if (d0 <= (double) this.maxAttackDistance && this.seeTime >= 20) {
-            this.entity.getNavigator().clearPath();
+            this.entity.getNavigator().clearPathEntity();
         } else {
             this.entity.getNavigator().tryMoveToEntityLiving(entitylivingbase, this.moveSpeedAmp);
         }

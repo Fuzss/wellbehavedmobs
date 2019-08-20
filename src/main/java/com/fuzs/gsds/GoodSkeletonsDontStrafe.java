@@ -22,7 +22,6 @@ import java.io.File;
         acceptedMinecraftVersions = GoodSkeletonsDontStrafe.RANGE,
         acceptableRemoteVersions = GoodSkeletonsDontStrafe.REMOTE,
         guiFactory = GoodSkeletonsDontStrafe.GUI,
-        dependencies = GoodSkeletonsDontStrafe.DEPENDENCIES,
         certificateFingerprint = GoodSkeletonsDontStrafe.FINGERPRINT
 )
 public class GoodSkeletonsDontStrafe {
@@ -30,11 +29,10 @@ public class GoodSkeletonsDontStrafe {
     public static final String MODID = "goodskeletonsdontstrafe";
     public static final String NAME = "Good Skeletons Don't Strafe";
     public static final String VERSION = "@VERSION@";
-    public static final String RANGE = "[1.12.2]";
+    public static final String RANGE = "[1.11, 1.11.2]";
     public static final String REMOTE = "*";
     public static final String GUI = "com.fuzs.gsds.helper.GuiFactory";
     public static final String SLUG = "skeletonsdontstrafe";
-    public static final String DEPENDENCIES = "required-after:forge@[14.23.5.2779,)";
     public static final String FINGERPRINT = "@FINGERPRINT@";
 
     public static final Logger LOGGER = LogManager.getLogger(GoodSkeletonsDontStrafe.NAME);

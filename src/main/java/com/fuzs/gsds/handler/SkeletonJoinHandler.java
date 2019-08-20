@@ -22,7 +22,7 @@ public class SkeletonJoinHandler {
 
             AbstractSkeleton abstractskeleton = (AbstractSkeleton) evt.getEntity();
             boolean flag = abstractskeleton.getEntityWorld().getDifficulty() != EnumDifficulty.HARD && ConfigHandler.slowBowDrawing;
-            EntityAIAttackRangedEasyBow<AbstractSkeleton> aiarroweasyattack = new EntityAIAttackRangedEasyBow<>(abstractskeleton, ConfigHandler.chaseSpeedAmp, flag ? 40 : 20, 60, (float) ConfigHandler.maxAttackDistance);
+            EntityAIAttackRangedEasyBow aiarroweasyattack = new EntityAIAttackRangedEasyBow(abstractskeleton, ConfigHandler.chaseSpeedAmp, flag ? 40 : 20, 60, (float) ConfigHandler.maxAttackDistance);
             ItemStack itemstack = abstractskeleton.getHeldItemMainhand();
 
             if (itemstack.getItem() instanceof ItemBow) {
