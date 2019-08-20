@@ -1,18 +1,15 @@
 package com.fuzs.gsds.ai;
 
 import com.fuzs.gsds.handler.ConfigHandler;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IRangedAttackMob;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.entity.ai.goal.RangedBowAttackGoal;
-import net.minecraft.entity.monster.MonsterEntity;
-import net.minecraft.item.BowItem;
-import net.minecraft.util.Hand;
+import net.minecraft.entity.ai.EntityAIAttackRangedBow;
+import net.minecraft.entity.monster.EntityMob;
+import net.minecraft.item.ItemBow;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.MathHelper;
 
-import java.util.EnumSet;
-
-public class RangedEasyBowAttackGoal<T extends MonsterEntity & IRangedAttackMob> extends RangedBowAttackGoal<T> {
+public class EntityAIAttackRangedEasyBow<T extends EntityMob & IRangedAttackMob> extends EntityAIAttackRangedBow<T> {
 
     // The entity (as a RangedAttackMob) the AI instance has been applied to.
     private final T entity;
@@ -21,12 +18,12 @@ public class RangedEasyBowAttackGoal<T extends MonsterEntity & IRangedAttackMob>
     private final double moveSpeedAmp;
     private int seeTime;
     private int attackCooldown;
-    // The maximum time the AI has to wait before peforming another ranged attack.
+    // The maximum time the AI has to wait before performing another ranged attack.
     private int maxattackTime;
     private float field_96562_i;
     private float maxAttackDistance;
 
-    public RangedEasyBowAttackGoal(T attacker, double movespeed, int p_i1650_4_, int maxattackTime, float maxAttackDistanceIn) {
+    public EntityAIAttackRangedEasyBow(T attacker, double movespeed, int p_i1650_4_, int maxattackTime, float maxAttackDistanceIn) {
         super(attacker, movespeed, p_i1650_4_, maxAttackDistanceIn);
         this.attackTime = -1;
         this.entity = attacker;
@@ -35,7 +32,7 @@ public class RangedEasyBowAttackGoal<T extends MonsterEntity & IRangedAttackMob>
         this.maxattackTime = maxattackTime;
         this.field_96562_i = maxAttackDistanceIn;
         this.maxAttackDistance = maxAttackDistanceIn * maxAttackDistanceIn;
-        this.setMutexFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
+        this.setMutexBits(3);
     }
 
     /**
@@ -54,7 +51,7 @@ public class RangedEasyBowAttackGoal<T extends MonsterEntity & IRangedAttackMob>
     @Override
     public void tick() {
 
-        LivingEntity entitylivingbase = this.entity.getAttackTarget();
+        EntityLivingBase entitylivingbase = this.entity.getAttackTarget();
         
         if (entitylivingbase == null) {
             return;
@@ -79,7 +76,7 @@ public class RangedEasyBowAttackGoal<T extends MonsterEntity & IRangedAttackMob>
             this.entity.getNavigator().tryMoveToEntityLiving(entitylivingbase, this.moveSpeedAmp);
         }
 
-        this.entity.getLookController().setLookPositionWithEntity(entitylivingbase, 30.0F, 30.0F);
+        this.entity.getLookHelper().setLookPositionWithEntity(entitylivingbase, 30.0F, 30.0F);
 
         if (ConfigHandler.GENERAL_CONFIG.slowBowDrawing.get()) {
 
@@ -95,7 +92,7 @@ public class RangedEasyBowAttackGoal<T extends MonsterEntity & IRangedAttackMob>
 
                     if (i >= 20) {
                         this.entity.resetActiveHand();
-                        this.entity.attackEntityWithRangedAttack(entitylivingbase, BowItem.getArrowVelocity(i));
+                        this.entity.attackEntityWithRangedAttack(entitylivingbase, ItemBow.getArrowVelocity(i));
                         this.attackTime = this.attackCooldown;
                     }
 
@@ -103,7 +100,7 @@ public class RangedEasyBowAttackGoal<T extends MonsterEntity & IRangedAttackMob>
 
             } else if (--this.attackTime <= 0 && this.seeTime >= -60) {
 
-                this.entity.setActiveHand(Hand.MAIN_HAND);
+                this.entity.setActiveHand(EnumHand.MAIN_HAND);
 
             }
 
@@ -132,7 +129,7 @@ public class RangedEasyBowAttackGoal<T extends MonsterEntity & IRangedAttackMob>
 
             } else if (!this.entity.isHandActive() && this.attackTime <= 20 && ConfigHandler.GENERAL_CONFIG.bowDrawingAnim.get()) {
 
-                this.entity.setActiveHand(Hand.MAIN_HAND);
+                this.entity.setActiveHand(EnumHand.MAIN_HAND);
 
             }
 

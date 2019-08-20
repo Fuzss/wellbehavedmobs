@@ -1,20 +1,16 @@
 package com.fuzs.gsds.handler;
 
-import com.fuzs.gsds.ai.RangedEasyBowAttackGoal;
+import com.fuzs.gsds.ai.EntityAIAttackRangedEasyBow;
 import com.fuzs.gsds.helper.ReflectionHelper;
-import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.entity.ai.goal.PrioritizedGoal;
-import net.minecraft.entity.ai.goal.RangedBowAttackGoal;
-import net.minecraft.entity.monster.AbstractSkeletonEntity;
-import net.minecraft.entity.monster.SkeletonEntity;
-import net.minecraft.entity.monster.StrayEntity;
-import net.minecraft.item.BowItem;
+import net.minecraft.entity.ai.EntityAIAttackRangedBow;
+import net.minecraft.entity.ai.EntityAIBase;
+import net.minecraft.entity.ai.EntityAITasks;
+import net.minecraft.entity.monster.AbstractSkeleton;
+import net.minecraft.item.ItemBow;
 import net.minecraft.item.ItemStack;
-import net.minecraft.world.Difficulty;
+import net.minecraft.world.EnumDifficulty;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-
-import java.util.Set;
 
 public class SkeletonJoinHandler {
 
@@ -22,26 +18,23 @@ public class SkeletonJoinHandler {
     @SubscribeEvent
     public void onJoinWorld(EntityJoinWorldEvent evt) {
 
-        if (evt.getEntity() instanceof AbstractSkeletonEntity) {
+        if (evt.getEntity() instanceof AbstractSkeleton) {
 
-            AbstractSkeletonEntity abstractskeleton = (AbstractSkeletonEntity) evt.getEntity();
-            boolean flag = abstractskeleton.getEntityWorld().getDifficulty() != Difficulty.HARD && ConfigHandler.GENERAL_CONFIG.slowBowDrawing.get();
-            RangedEasyBowAttackGoal<AbstractSkeletonEntity> aiarroweasyattack = new RangedEasyBowAttackGoal<>(abstractskeleton, ConfigHandler.GENERAL_CONFIG.chaseSpeedAmp.get(), flag ? 40 : 20, 60, ConfigHandler.GENERAL_CONFIG.maxAttackDistance.get().floatValue());
+            AbstractSkeleton abstractskeleton = (AbstractSkeleton) evt.getEntity();
+            boolean flag = abstractskeleton.getEntityWorld().getDifficulty() != EnumDifficulty.HARD && ConfigHandler.GENERAL_CONFIG.slowBowDrawing.get();
+            EntityAIAttackRangedEasyBow<AbstractSkeleton> aiarroweasyattack = new EntityAIAttackRangedEasyBow<>(abstractskeleton, ConfigHandler.GENERAL_CONFIG.chaseSpeedAmp.get(), flag ? 40 : 20, 60, ConfigHandler.GENERAL_CONFIG.maxAttackDistance.get().floatValue());
             ItemStack itemstack = abstractskeleton.getHeldItemMainhand();
 
-            if (itemstack.getItem() instanceof BowItem) {
+            if (itemstack.getItem() instanceof ItemBow) {
 
-                Set<PrioritizedGoal> goals = ReflectionHelper.getGoals(abstractskeleton.goalSelector);
-                assert goals != null;
+                for (EntityAITasks.EntityAITaskEntry entityaitasks$entityaitaskentry : abstractskeleton.tasks.taskEntries) {
 
-                for (PrioritizedGoal entityaitasks$entityaitaskentry : goals) {
+                    EntityAIBase entityaibase = entityaitasks$entityaitaskentry.action;
 
-                    Goal entityaibase = ReflectionHelper.getInnerGoal(entityaitasks$entityaitaskentry);
+                    if (entityaibase instanceof EntityAIAttackRangedBow) {
 
-                    if (entityaibase instanceof RangedBowAttackGoal) {
-
-                        abstractskeleton.goalSelector.removeGoal(entityaibase);
-                        abstractskeleton.goalSelector.addGoal(4, aiarroweasyattack);
+                        abstractskeleton.tasks.removeTask(entityaibase);
+                        abstractskeleton.tasks.addTask(4, aiarroweasyattack);
 
                     }
 
