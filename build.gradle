@@ -33,7 +33,7 @@ minecraft {
 }
 
 jar {
-    archiveName "${mod_name.replaceAll("[^a-zA-Z[\\\\s]]", "")}-v${mod_version}-${mc_version}.jar" // use archiveFileName in the future
+    archiveName "${mod_name.replaceAll("[^a-zA-Z[\\s]]", "")}-v${mod_version}-${mc_version}.jar" // use archiveFileName in the future
 }
 
 processResources {
