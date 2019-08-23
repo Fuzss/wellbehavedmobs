@@ -34,6 +34,11 @@ public class EntityAIAttackRangedEasyBow extends EntityAIAttackRangedBow {
         this.setMutexBits(3);
     }
 
+    @Override
+    public void setAttackCooldown(int cooldown) {
+        this.attackCooldown = cooldown;
+    }
+
     /**
      * Reset the task's internal state. Called when this task is interrupted by another one
      */
