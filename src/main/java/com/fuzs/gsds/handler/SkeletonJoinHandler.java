@@ -6,11 +6,8 @@ import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.ai.goal.PrioritizedGoal;
 import net.minecraft.entity.ai.goal.RangedBowAttackGoal;
 import net.minecraft.entity.monster.AbstractSkeletonEntity;
-import net.minecraft.entity.monster.SkeletonEntity;
-import net.minecraft.entity.monster.StrayEntity;
 import net.minecraft.item.BowItem;
 import net.minecraft.item.ItemStack;
-import net.minecraft.world.Difficulty;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
@@ -25,14 +22,17 @@ public class SkeletonJoinHandler {
         if (evt.getEntity() instanceof AbstractSkeletonEntity) {
 
             AbstractSkeletonEntity abstractskeleton = (AbstractSkeletonEntity) evt.getEntity();
-            boolean flag = abstractskeleton.getEntityWorld().getDifficulty() != Difficulty.HARD && ConfigHandler.GENERAL_CONFIG.slowBowDrawing.get();
-            RangedEasyBowAttackGoal<AbstractSkeletonEntity> aiarroweasyattack = new RangedEasyBowAttackGoal<>(abstractskeleton, ConfigHandler.GENERAL_CONFIG.chaseSpeedAmp.get(), flag ? 40 : 20, 60, ConfigHandler.GENERAL_CONFIG.maxAttackDistance.get().floatValue());
             ItemStack itemstack = abstractskeleton.getHeldItemMainhand();
+
+            RangedEasyBowAttackGoal<AbstractSkeletonEntity> aiarroweasyattack = new RangedEasyBowAttackGoal<>(abstractskeleton,
+                    ConfigHandler.GENERAL_CONFIG.chaseSpeedAmp.get(), 20, 60, ConfigHandler.GENERAL_CONFIG.maxAttackDistance.get().floatValue());
 
             if (itemstack.getItem() instanceof BowItem) {
 
                 Set<PrioritizedGoal> goals = ReflectionHelper.getGoals(abstractskeleton.goalSelector);
                 assert goals != null;
+
+                Goal aiarrowattack = null;
 
                 for (PrioritizedGoal entityaitasks$entityaitaskentry : goals) {
 
@@ -40,10 +40,17 @@ public class SkeletonJoinHandler {
 
                     if (entityaibase instanceof RangedBowAttackGoal) {
 
-                        abstractskeleton.goalSelector.removeGoal(entityaibase);
-                        abstractskeleton.goalSelector.addGoal(4, aiarroweasyattack);
+                        aiarrowattack = entityaibase;
+                        break;
 
                     }
+
+                }
+
+                if (aiarrowattack != null) {
+
+                    abstractskeleton.goalSelector.removeGoal(aiarrowattack);
+                    abstractskeleton.goalSelector.addGoal(4, aiarroweasyattack);
 
                 }
 

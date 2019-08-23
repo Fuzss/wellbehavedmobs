@@ -38,6 +38,11 @@ public class RangedEasyBowAttackGoal<T extends MonsterEntity & IRangedAttackMob>
         this.setMutexFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
     }
 
+    @Override
+    public void setAttackCooldown(int cooldown) {
+        this.attackCooldown = cooldown;
+    }
+
     /**
      * Reset the task's internal state. Called when this task is interrupted by another one
      */
