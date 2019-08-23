@@ -8,7 +8,6 @@ import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.item.ItemBow;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.EnumDifficulty;
 
 public class EntityAIAttackRangedEasyBow<T extends EntityMob & IRangedAttackMob> extends EntityAIAttackRangedBow<T> {
 
