@@ -65,7 +65,7 @@ public class RangedEasyBowAttackGoal<T extends MonsterEntity & IRangedAttackMob>
             return;
         }
         
-        double d0 = this.entity.getDistanceSq(livingentity.func_226277_ct_(), livingentity.func_226278_cu_(), livingentity.func_226281_cx_());
+        double d0 = this.entity.getDistanceSq(livingentity.posX, livingentity.getBoundingBox().minY, livingentity.posZ);
         boolean flag = this.entity.getEntitySenses().canSee(livingentity);
 
         if (flag != this.seeTime > 0) {
