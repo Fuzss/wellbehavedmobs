@@ -1,9 +1,6 @@
 package com.fuzs.gsds.handler;
 
 import com.fuzs.gsds.ai.RangedEasyBowAttackGoal;
-import com.fuzs.gsds.helper.ReflectionHelper;
-import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.entity.ai.goal.PrioritizedGoal;
 import net.minecraft.entity.ai.goal.RangedBowAttackGoal;
 import net.minecraft.entity.monster.AbstractSkeletonEntity;
 import net.minecraft.item.BowItem;
@@ -11,52 +8,27 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
-import java.util.Set;
-
 public class SkeletonJoinHandler {
 
     @SuppressWarnings("unused")
     @SubscribeEvent
-    public void onJoinWorld(EntityJoinWorldEvent evt) {
+    public void onEntityJoinWorld(EntityJoinWorldEvent evt) {
 
         if (evt.getEntity() instanceof AbstractSkeletonEntity) {
 
-            AbstractSkeletonEntity abstractskeleton = (AbstractSkeletonEntity) evt.getEntity();
-            ItemStack itemstack = abstractskeleton.getHeldItemMainhand();
+            AbstractSkeletonEntity skeleton = (AbstractSkeletonEntity) evt.getEntity();
+            ItemStack stack = skeleton.getHeldItemMainhand();
+            RangedEasyBowAttackGoal<AbstractSkeletonEntity> aiarroweasyattack = new RangedEasyBowAttackGoal<>(skeleton, ConfigBuildHandler.GENERAL_CONFIG.chaseSpeedAmp.get(),
+                    20, 60, ConfigBuildHandler.GENERAL_CONFIG.maxAttackDistance.get().floatValue());
+            skeleton.aiArrowAttack = aiarroweasyattack;
 
-            RangedEasyBowAttackGoal<AbstractSkeletonEntity> aiarroweasyattack = new RangedEasyBowAttackGoal<>(abstractskeleton,
-                    ConfigHandler.GENERAL_CONFIG.chaseSpeedAmp.get(), 20, 60, ConfigHandler.GENERAL_CONFIG.maxAttackDistance.get().floatValue());
-
-            if (itemstack.getItem() instanceof BowItem) {
-
-                Set<PrioritizedGoal> goals = ReflectionHelper.getGoals(abstractskeleton.goalSelector);
-                assert goals != null;
-
-                Goal aiarrowattack = null;
-
-                for (PrioritizedGoal entityaitasks$entityaitaskentry : goals) {
-
-                    Goal entityaibase = ReflectionHelper.getInnerGoal(entityaitasks$entityaitaskentry);
-
-                    if (entityaibase instanceof RangedBowAttackGoal) {
-
-                        aiarrowattack = entityaibase;
-                        break;
-
-                    }
-
-                }
-
-                if (aiarrowattack != null) {
-
-                    abstractskeleton.goalSelector.removeGoal(aiarrowattack);
-                    abstractskeleton.goalSelector.addGoal(4, aiarroweasyattack);
-
-                }
-
+            if (stack.getItem() instanceof BowItem) {
+                skeleton.goalSelector.goals.stream().map(it -> it.inner).filter(it -> it instanceof RangedBowAttackGoal)
+                        .findFirst().ifPresent(bowGoal -> {
+                    skeleton.goalSelector.removeGoal(bowGoal);
+                    skeleton.goalSelector.addGoal(4, aiarroweasyattack);
+                });
             }
-
-            ReflectionHelper.setAiArrowAttack(abstractskeleton, aiarroweasyattack);
 
         }
 

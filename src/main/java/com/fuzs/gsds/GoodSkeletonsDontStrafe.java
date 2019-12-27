@@ -1,6 +1,6 @@
 package com.fuzs.gsds;
 
-import com.fuzs.gsds.handler.ConfigHandler;
+import com.fuzs.gsds.handler.ConfigBuildHandler;
 import com.fuzs.gsds.handler.SkeletonJoinHandler;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.ModLoadingContext;
@@ -20,16 +20,12 @@ public class GoodSkeletonsDontStrafe {
     public static final Logger LOGGER = LogManager.getLogger(GoodSkeletonsDontStrafe.NAME);
 
     public GoodSkeletonsDontStrafe() {
-
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::commonSetup);
-        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, ConfigHandler.SPEC, MODID + ".toml");
-
+        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, ConfigBuildHandler.SPEC, MODID + ".toml");
     }
 
     private void commonSetup(final FMLCommonSetupEvent evt) {
-
         MinecraftForge.EVENT_BUS.register(new SkeletonJoinHandler());
-
     }
 
 }

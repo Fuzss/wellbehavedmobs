@@ -3,7 +3,7 @@ package com.fuzs.gsds.handler;
 import net.minecraftforge.common.ForgeConfigSpec;
 
 @SuppressWarnings("WeakerAccess")
-public class ConfigHandler {
+public class ConfigBuildHandler {
 
     private static final ForgeConfigSpec.Builder BUILDER = new ForgeConfigSpec.Builder();
     public static final GeneralConfig GENERAL_CONFIG = new GeneralConfig("general");
