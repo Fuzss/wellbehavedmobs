@@ -1,6 +1,6 @@
-package com.fuzs.puzzleslib.config.deserialize;
+package com.fuzs.puzzleslib_wbm.config.deserialize;
 
-import com.fuzs.puzzleslib.PuzzlesLib;
+import com.fuzs.puzzleslib_wbm.PuzzlesLib;
 import com.google.common.collect.Lists;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.registries.IForgeRegistry;

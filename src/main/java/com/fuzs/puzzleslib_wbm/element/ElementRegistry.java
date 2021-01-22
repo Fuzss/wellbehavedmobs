@@ -1,6 +1,6 @@
-package com.fuzs.puzzleslib.element;
+package com.fuzs.puzzleslib_wbm.element;
 
-import com.fuzs.puzzleslib.config.ConfigManager;
+import com.fuzs.puzzleslib_wbm.config.ConfigManager;
 import com.google.common.collect.Maps;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.ModLoadingContext;
@@ -15,6 +15,7 @@ import java.util.stream.Stream;
 /**
  * default registry for elements
  */
+@SuppressWarnings("unused")
 public abstract class ElementRegistry {
 
     /**

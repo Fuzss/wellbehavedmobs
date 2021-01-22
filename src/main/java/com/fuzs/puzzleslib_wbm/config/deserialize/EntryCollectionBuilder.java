@@ -1,4 +1,4 @@
-package com.fuzs.puzzleslib.config.deserialize;
+package com.fuzs.puzzleslib_wbm.config.deserialize;
 
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;

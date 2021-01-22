@@ -1,7 +1,7 @@
-package com.fuzs.puzzleslib.element;
+package com.fuzs.puzzleslib_wbm.element;
 
-import com.fuzs.puzzleslib.config.ConfigManager;
-import com.fuzs.puzzleslib.config.deserialize.EntryCollectionBuilder;
+import com.fuzs.puzzleslib_wbm.config.ConfigManager;
+import com.fuzs.puzzleslib_wbm.config.deserialize.EntryCollectionBuilder;
 import com.google.common.collect.Lists;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.ForgeConfigSpec;
@@ -132,9 +132,9 @@ public abstract class AbstractElement implements IConfigurableElement {
     }
 
     /**
-     * @param commonSetup consumer if implements {@link com.fuzs.puzzleslib.element.ISidedElement.Common}
-     * @param clientSetup consumer if implements {@link com.fuzs.puzzleslib.element.ISidedElement.Client}
-     * @param serverSetup consumer if implements {@link com.fuzs.puzzleslib.element.ISidedElement.Server}
+     * @param commonSetup consumer if implements {@link com.fuzs.puzzleslib_wbm.element.ISidedElement.Common}
+     * @param clientSetup consumer if implements {@link com.fuzs.puzzleslib_wbm.element.ISidedElement.Client}
+     * @param serverSetup consumer if implements {@link com.fuzs.puzzleslib_wbm.element.ISidedElement.Server}
      */
     private void setup(Consumer<ISidedElement.Common> commonSetup, Consumer<ISidedElement.Client> clientSetup, Consumer<ISidedElement.Server> serverSetup) {
 

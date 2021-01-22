@@ -1,4 +1,4 @@
-package com.fuzs.puzzleslib.config;
+package com.fuzs.puzzleslib_wbm.config;
 
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.fml.ModLoadingContext;
@@ -27,6 +27,17 @@ public class ConfigBuilder {
     private ModConfig.Type activeType;
 
     /**
+     * add a spec when building config manually
+     * @param spec spec to add
+     * @param type type to add
+     * @return was adding successful (spec not present yet)
+     */
+    public boolean addSpec(ModConfig.Type type, ForgeConfigSpec spec) {
+
+        return this.configTypeEntries.get(type).addSpec(spec);
+    }
+
+    /**
      * get spec, build from builder if absent
      * @param type type to get spec for
      * @return config spec for type
@@ -44,7 +55,7 @@ public class ConfigBuilder {
      */
     public boolean isSpecNotBuilt(ModConfig.Type type) {
 
-        return this.configTypeEntries.get(type).isSpecBuilt();
+        return this.configTypeEntries.get(type).isSpecNotBuilt();
     }
 
     /**
@@ -56,17 +67,6 @@ public class ConfigBuilder {
     public boolean isSpecNotValid(ModConfig.Type type) {
 
         return this.isSpecNotBuilt(type) || !this.configTypeEntries.get(type).getSpec().isLoaded();
-    }
-
-    /**
-     * add a spec when building config manually
-     * @param spec spec to add
-     * @param type type to add
-     * @return was adding successful (spec not present yet)
-     */
-    public boolean addSpec(ModConfig.Type type, ForgeConfigSpec spec) {
-
-        return this.configTypeEntries.get(type).addSpec(spec);
     }
 
     /**
@@ -102,7 +102,7 @@ public class ConfigBuilder {
         for (ModConfig.Type type : ModConfig.Type.values()) {
 
             ConfigTypeEntry typeEntry = this.configTypeEntries.get(type);
-            if (typeEntry.isSpecBuilt()) {
+            if (typeEntry.canBuildSpec()) {
 
                 context.registerConfig(type, typeEntry.getSpec(), typeEntry.getName(context));
             }
@@ -115,8 +115,11 @@ public class ConfigBuilder {
      */
     public void moveToFolder(String... folderName) {
 
-        String prefix = String.join(File.separator, folderName);
-        this.configTypeEntries.values().forEach(typeEntry -> typeEntry.setPrefix(prefix));
+        if (folderName.length > 0) {
+
+            String prefix = String.join(File.separator, folderName) + File.separator;
+            this.configTypeEntries.values().forEach(typeEntry -> typeEntry.setPrefix(prefix));
+        }
     }
 
     /**
@@ -158,20 +161,20 @@ public class ConfigBuilder {
         }
 
         /**
-         * @return has builder not been created yet
-         */
-        boolean isBuilderMissing() {
-
-            return this.builder == null;
-        }
-
-        /**
          * has the spec for this type been built yet (has {@link #getSpec} been called)
          * @return has spec been built
          */
-        public boolean isSpecBuilt() {
+        boolean isSpecNotBuilt() {
 
             return this.spec == null;
+        }
+
+        /**
+         * @return can a new spec be built due to the presence of a builder
+         */
+        boolean canBuildSpec() {
+
+            return this.builder != null;
         }
 
         /**
@@ -181,7 +184,7 @@ public class ConfigBuilder {
          */
         boolean addSpec(ForgeConfigSpec spec) {
 
-            if (!this.isSpecBuilt()) {
+            if (this.isSpecNotBuilt()) {
 
                 this.spec = spec;
                 return true;
@@ -197,9 +200,9 @@ public class ConfigBuilder {
         @Nullable
         ForgeConfigSpec getSpec() {
 
-            if (!this.isSpecBuilt()) {
+            if (this.isSpecNotBuilt()) {
 
-                if (this.isBuilderMissing()) {
+                if (!this.canBuildSpec()) {
 
                     return null;
                 }
@@ -207,7 +210,7 @@ public class ConfigBuilder {
                 this.spec = this.builder.build();
             }
 
-            return spec;
+            return this.spec;
         }
 
         /**
@@ -215,12 +218,12 @@ public class ConfigBuilder {
          */
         ForgeConfigSpec.Builder getBuilder() {
 
-            if (this.isBuilderMissing()) {
+            if (this.builder == null) {
 
                 this.builder = new ForgeConfigSpec.Builder();
             }
 
-            return builder;
+            return this.builder;
         }
 
         /**
@@ -239,7 +242,7 @@ public class ConfigBuilder {
         String getName(ModLoadingContext context) {
 
             String modId = context.getActiveContainer().getModId();
-            return this.path + File.separator + String.format("%s-%s.toml", modId, this.type);
+            return this.path + String.format("%s-%s.toml", modId, this.type);
         }
     }
 

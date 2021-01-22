@@ -1,6 +1,6 @@
-package com.fuzs.puzzleslib.config;
+package com.fuzs.puzzleslib_wbm.config;
 
-import com.fuzs.puzzleslib.PuzzlesLib;
+import com.fuzs.puzzleslib_wbm.PuzzlesLib;
 import com.google.common.collect.Maps;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.ForgeConfigSpec;

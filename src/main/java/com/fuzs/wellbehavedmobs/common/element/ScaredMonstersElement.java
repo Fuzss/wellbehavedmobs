@@ -1,9 +1,9 @@
 package com.fuzs.wellbehavedmobs.common.element;
 
-import com.fuzs.puzzleslib.config.ConfigManager;
-import com.fuzs.puzzleslib.config.deserialize.EntryCollectionBuilder;
-import com.fuzs.puzzleslib.element.AbstractElement;
-import com.fuzs.puzzleslib.element.ISidedElement;
+import com.fuzs.puzzleslib_wbm.config.ConfigManager;
+import com.fuzs.puzzleslib_wbm.config.deserialize.EntryCollectionBuilder;
+import com.fuzs.puzzleslib_wbm.element.AbstractElement;
+import com.fuzs.puzzleslib_wbm.element.ISidedElement;
 import net.minecraft.entity.CreatureEntity;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
@@ -17,7 +17,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import java.util.List;
 import java.util.Set;
 
-public class ScaredMonsterElement extends AbstractElement implements ISidedElement.Common {
+public class ScaredMonstersElement extends AbstractElement implements ISidedElement.Common {
 
     private Set<EntityType<?>> scaredMonsters;
 
@@ -47,7 +47,7 @@ public class ScaredMonsterElement extends AbstractElement implements ISidedEleme
 
     private List<String> getMonsterList() {
 
-        return ConfigManager.get().getKeyList(EntityType.CREEPER, EntityType.SKELETON, EntityType.SPIDER, EntityType.WITCH, EntityType.ZOMBIE, EntityType.ZOMBIE_VILLAGER, EntityType.ZOMBIFIED_PIGLIN, EntityType.HUSK, EntityType.STRAY, EntityType.WITHER_SKELETON, EntityType.DROWNED);
+        return ConfigManager.get().getKeyList(EntityType.CREEPER, EntityType.SKELETON, EntityType.SPIDER, EntityType.CAVE_SPIDER, EntityType.WITCH, EntityType.ZOMBIE, EntityType.ZOMBIE_VILLAGER, EntityType.ZOMBIFIED_PIGLIN, EntityType.HUSK, EntityType.STRAY, EntityType.WITHER_SKELETON, EntityType.DROWNED);
     }
 
     private void onEntityJoinWorld(final EntityJoinWorldEvent evt) {

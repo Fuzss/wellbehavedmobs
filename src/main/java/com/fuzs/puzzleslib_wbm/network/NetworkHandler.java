@@ -1,7 +1,7 @@
-package com.fuzs.puzzleslib.network;
+package com.fuzs.puzzleslib_wbm.network;
 
-import com.fuzs.puzzleslib.PuzzlesLib;
-import com.fuzs.puzzleslib.network.message.IMessage;
+import com.fuzs.puzzleslib_wbm.PuzzlesLib;
+import com.fuzs.puzzleslib_wbm.network.message.IMessage;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.util.RegistryKey;
 import net.minecraft.util.ResourceLocation;

@@ -1,7 +1,7 @@
 package com.fuzs.wellbehavedmobs.common.element;
 
-import com.fuzs.puzzleslib.element.AbstractElement;
-import com.fuzs.puzzleslib.element.ISidedElement;
+import com.fuzs.puzzleslib_wbm.element.AbstractElement;
+import com.fuzs.puzzleslib_wbm.element.ISidedElement;
 import com.fuzs.wellbehavedmobs.mixin.accessor.IGoalSelectorAccessor;
 import com.fuzs.wellbehavedmobs.mixin.accessor.IHurtByTargetGoalAccessor;
 import net.minecraft.entity.EntityType;
@@ -13,7 +13,7 @@ import net.minecraft.entity.monster.BlazeEntity;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 
-public class HelplessBlazeElement extends AbstractElement implements ISidedElement.Common {
+public class HelplessBlazesElement extends AbstractElement implements ISidedElement.Common {
 
     private boolean noCallForHelp;
 

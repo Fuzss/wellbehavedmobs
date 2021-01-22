@@ -1,7 +1,7 @@
 package com.fuzs.wellbehavedmobs.common.element;
 
-import com.fuzs.puzzleslib.element.AbstractElement;
-import com.fuzs.puzzleslib.element.ISidedElement;
+import com.fuzs.puzzleslib_wbm.element.AbstractElement;
+import com.fuzs.puzzleslib_wbm.element.ISidedElement;
 import com.fuzs.wellbehavedmobs.mixin.accessor.IAvoidEntityGoalAccessor;
 import com.fuzs.wellbehavedmobs.mixin.accessor.IGoalSelectorAccessor;
 import net.minecraft.block.Blocks;
@@ -16,7 +16,7 @@ import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class BraveRabbitElement extends AbstractElement implements ISidedElement.Common {
+public class BraveRabbitsElement extends AbstractElement implements ISidedElement.Common {
 
     @Override
     public boolean getDefaultState() {

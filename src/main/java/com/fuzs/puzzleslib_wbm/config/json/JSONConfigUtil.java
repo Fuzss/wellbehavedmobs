@@ -1,6 +1,6 @@
-package com.fuzs.puzzleslib.config.json;
+package com.fuzs.puzzleslib_wbm.config.json;
 
-import com.fuzs.puzzleslib.PuzzlesLib;
+import com.fuzs.puzzleslib_wbm.PuzzlesLib;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;

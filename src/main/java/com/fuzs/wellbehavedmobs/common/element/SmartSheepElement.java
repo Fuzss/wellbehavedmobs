@@ -1,7 +1,7 @@
 package com.fuzs.wellbehavedmobs.common.element;
 
-import com.fuzs.puzzleslib.element.AbstractElement;
-import com.fuzs.puzzleslib.element.ISidedElement;
+import com.fuzs.puzzleslib_wbm.element.AbstractElement;
+import com.fuzs.puzzleslib_wbm.element.ISidedElement;
 import net.minecraft.entity.ai.goal.AvoidEntityGoal;
 import net.minecraft.entity.passive.SheepEntity;
 import net.minecraft.entity.passive.WolfEntity;
@@ -32,7 +32,7 @@ public class SmartSheepElement extends AbstractElement implements ISidedElement.
         if (evt.getEntity() instanceof SheepEntity) {
 
             SheepEntity sheepEntity = (SheepEntity) evt.getEntity();
-            sheepEntity.goalSelector.addGoal(4, new AvoidEntityGoal<>(sheepEntity, WolfEntity.class, 10.0F, 1.25, 1.25));
+            sheepEntity.goalSelector.addGoal(4, new AvoidEntityGoal<>(sheepEntity, WolfEntity.class, 10.0F, 1.25, 1.5));
         }
     }
     

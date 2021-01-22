@@ -1,4 +1,4 @@
-package com.fuzs.puzzleslib.network.message;
+package com.fuzs.puzzleslib_wbm.network.message;
 
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.network.PacketBuffer;

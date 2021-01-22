@@ -1,7 +1,7 @@
 package com.fuzs.wellbehavedmobs.common.element;
 
-import com.fuzs.puzzleslib.element.AbstractElement;
-import com.fuzs.puzzleslib.element.ISidedElement;
+import com.fuzs.puzzleslib_wbm.element.AbstractElement;
+import com.fuzs.puzzleslib_wbm.element.ISidedElement;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.attributes.GlobalEntityTypeAttributes;
@@ -13,7 +13,7 @@ import net.minecraftforge.event.entity.living.LivingSetAttackTargetEvent;
 import java.util.Optional;
 import java.util.UUID;
 
-public class ChilledEndermanElement extends AbstractElement implements ISidedElement.Common {
+public class ChilledEndermenElement extends AbstractElement implements ISidedElement.Common {
 
     private boolean chilledAttackSpeed;
 
@@ -39,7 +39,7 @@ public class ChilledEndermanElement extends AbstractElement implements ISidedEle
     public void setupCommonConfig(ForgeConfigSpec.Builder builder) {
 
         addToConfig(builder.comment("Enderman don't run even faster when attacking.").define("Chilled Attack Speed", true), v -> this.chilledAttackSpeed = v);
-        addToConfig(builder.comment("Decrease follow range to 32 blocks from a ridiculously high 64 count.").define("Decrease Follow Range", false), this::setFollowRangeAttribute);
+        addToConfig(builder.comment("Decrease follow range to 32 blocks from a ridiculously high 64 block count.").define("Decrease Follow Range", false), this::setFollowRangeAttribute);
     }
 
     @Override

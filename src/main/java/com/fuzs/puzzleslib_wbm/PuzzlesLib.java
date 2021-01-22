@@ -1,6 +1,6 @@
-package com.fuzs.puzzleslib;
+package com.fuzs.puzzleslib_wbm;
 
-import com.fuzs.puzzleslib.element.ElementRegistry;
+import com.fuzs.puzzleslib_wbm.element.ElementRegistry;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLDedicatedServerSetupEvent;

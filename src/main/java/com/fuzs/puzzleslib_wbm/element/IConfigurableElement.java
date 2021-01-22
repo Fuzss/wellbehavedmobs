@@ -1,4 +1,4 @@
-package com.fuzs.puzzleslib.element;
+package com.fuzs.puzzleslib_wbm.element;
 
 import net.minecraftforge.common.ForgeConfigSpec;
 
