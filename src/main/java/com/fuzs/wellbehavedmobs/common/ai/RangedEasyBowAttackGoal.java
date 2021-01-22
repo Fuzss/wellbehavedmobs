@@ -1,6 +1,5 @@
-package com.fuzs.gsds.ai;
+package com.fuzs.wellbehavedmobs.common.ai;
 
-import com.fuzs.gsds.handler.ConfigBuildHandler;
 import net.minecraft.entity.IRangedAttackMob;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.goal.Goal;
