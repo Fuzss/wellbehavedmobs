@@ -28,6 +28,7 @@ public class SkeletonAttackElement extends AbstractElement implements ISidedElem
     public void setupCommonConfig(ForgeConfigSpec.Builder builder) {
 
         addToConfig(builder.comment("Skeletons will shoot faster the closer their target moves to them.").define("Quick Bow Drawing", true), v -> {});
+        addToConfig(builder.comment("Makes skeletons slowly walk backwards when their target moves in to close to them.").define("Escape Target", false), v -> {});
     }
 
     private void onEntityJoinWorld(final EntityJoinWorldEvent evt) {

@@ -69,11 +69,15 @@ public class ConfigManager {
         ModConfig.Type type = evt.getConfig().getType();
         if (this.getBuilder(modid).isSpecNotValid(type)) {
 
-            PuzzlesLib.LOGGER.error("Unable to get values from config during " + (evt instanceof ModConfig.Loading ? "loading" : "reloading") + " phase: " + "Config spec not present");
+            PuzzlesLib.LOGGER.error("Unable to get values from " + type.extension() + " config for " + modid + " during " + (evt instanceof ModConfig.Loading ? "loading" : "reloading") + " phase: " + "Config spec not present");
         } else {
 
             this.syncType(modid, type);
             this.notifyListeners(ConfigLoadState.getState(evt));
+            if (evt instanceof ModConfig.Reloading) {
+
+                PuzzlesLib.LOGGER.info("Reloading " + type.extension() + " config for " + modid);
+            }
         }
     }
 

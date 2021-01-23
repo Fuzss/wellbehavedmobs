@@ -50,11 +50,11 @@ public class RangedBowEasyAttackGoal<T extends MonsterEntity & IRangedAttackMob>
     @Override
     public void tick() {
 
-        LivingEntity livingentity = this.entity.getAttackTarget();
-        if (livingentity != null) {
+        LivingEntity attackTarget = this.entity.getAttackTarget();
+        if (attackTarget != null) {
 
-            double distanceToTarget = this.entity.getDistanceSq(livingentity.getPosX(), livingentity.getPosY(), livingentity.getPosZ());
-            boolean canSeeTarget = this.entity.getEntitySenses().canSee(livingentity);
+            double distanceToTarget = this.entity.getDistanceSq(attackTarget.getPosX(), attackTarget.getPosY(), attackTarget.getPosZ());
+            boolean canSeeTarget = this.entity.getEntitySenses().canSee(attackTarget);
 
             if (canSeeTarget != this.seeTime > 0) {
 
@@ -69,15 +69,28 @@ public class RangedBowEasyAttackGoal<T extends MonsterEntity & IRangedAttackMob>
                 --this.seeTime;
             }
 
-            if (distanceToTarget <= (double) this.maxAttackDistance && this.seeTime >= 20) {
+            boolean moveTowardsTarget = false;
+            boolean escapeFromTarget = false;
+            if (distanceToTarget <= this.maxAttackDistance && this.seeTime >= 20) {
 
                 this.entity.getNavigator().clearPath();
+                moveTowardsTarget = distanceToTarget > this.maxAttackDistance * 0.75F;
+                Optional<Object> optional = WellBehavedMobsElements.getConfigValue(WellBehavedMobsElements.SKELETON_ATTACK, "Escape Target");
+                escapeFromTarget = optional.isPresent() && (Boolean) optional.get() && distanceToTarget < this.maxAttackDistance * 0.25F;
             } else {
 
-                this.entity.getNavigator().tryMoveToEntityLiving(livingentity, this.moveSpeedAmplifier);
+                this.entity.getNavigator().tryMoveToEntityLiving(attackTarget, this.moveSpeedAmplifier);
             }
 
-            this.entity.getLookController().setLookPositionWithEntity(livingentity, 30.0F, 30.0F);
+            // force skeleton to move towards target, tryMoveToEntityLiving sometimes isn't good enough and leads to the attack being cancelled
+            if (moveTowardsTarget || escapeFromTarget) {
+
+                this.entity.getMoveHelper().strafe(moveTowardsTarget ? 0.5F : -0.5F, 0.0F);
+                this.entity.faceEntity(attackTarget, 30.0F, 30.0F);
+            } else {
+
+                this.entity.getLookController().setLookPositionWithEntity(attackTarget, 30.0F, 30.0F);
+            }
 
             if (this.entity.isHandActive()) {
 
@@ -91,7 +104,7 @@ public class RangedBowEasyAttackGoal<T extends MonsterEntity & IRangedAttackMob>
 
                         this.entity.resetActiveHand();
                         double distanceVelocity = Math.sqrt(distanceToTarget) / Math.sqrt(this.maxAttackDistance);
-                        this.entity.attackEntityWithRangedAttack(livingentity, MathHelper.clamp((float) distanceVelocity, 0.1F, 1.0F) * BowItem.getArrowVelocity(useCount));
+                        this.entity.attackEntityWithRangedAttack(attackTarget, MathHelper.clamp((float) distanceVelocity, 0.1F, 1.0F) * BowItem.getArrowVelocity(useCount));
                         Optional<Object> optional = WellBehavedMobsElements.getConfigValue(WellBehavedMobsElements.SKELETON_ATTACK, "Quick Bow Drawing");
                         this.attackTime = optional.isPresent() && !((Boolean) optional.get()) ? this.attackCooldown : MathHelper.floor(distanceVelocity * (this.maxAttackTime - this.attackCooldown) + this.attackCooldown);
                     }

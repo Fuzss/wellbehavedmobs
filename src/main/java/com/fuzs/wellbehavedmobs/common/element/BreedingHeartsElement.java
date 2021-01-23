@@ -13,7 +13,7 @@ public class BreedingHeartsElement extends AbstractElement implements ISidedElem
     @Override
     public String getDescription() {
 
-        return "Heart particles appear around animals in love instead of only once when they enter love mode.";
+        return "Heart particles appear around animals as long as they are in love instead of only once when they enter love mode.";
     }
 
     @Override
