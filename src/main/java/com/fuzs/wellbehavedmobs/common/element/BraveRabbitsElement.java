@@ -11,15 +11,12 @@ import net.minecraft.entity.passive.WolfEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Items;
 import net.minecraft.item.crafting.Ingredient;
-import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 
 import java.util.Set;
 import java.util.stream.Collectors;
 
 public class BraveRabbitsElement extends AbstractElement implements ISidedElement.Common {
-
-    private boolean braveRabbitAi;
 
     @Override
     public String getDescription() {
@@ -33,16 +30,9 @@ public class BraveRabbitsElement extends AbstractElement implements ISidedElemen
         this.addListener(this::onEntityJoinWorld);
     }
 
-    @Override
-    public void setupCommonConfig(ForgeConfigSpec.Builder builder) {
-
-        addToConfig(builder.comment("Changes to rabbit ai, main focus of this feature.").define("Brave Rabbit AI", true), v -> this.braveRabbitAi = v);
-        addToConfig(builder.comment("Allow rabbits to spawn everywhere where passive animals can spawn.").define("Rabbits Everywhere", false), v -> {});
-    }
-
     private void onEntityJoinWorld(final EntityJoinWorldEvent evt) {
 
-        if (this.braveRabbitAi && evt.getEntity() instanceof RabbitEntity) {
+        if (evt.getEntity() instanceof RabbitEntity) {
 
             RabbitEntity rabbitEntity = ((RabbitEntity) evt.getEntity());
             this.clearOldGoals(rabbitEntity);
