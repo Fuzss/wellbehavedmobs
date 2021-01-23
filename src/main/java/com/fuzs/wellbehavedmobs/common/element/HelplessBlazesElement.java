@@ -4,9 +4,8 @@ import com.fuzs.puzzleslib_wbm.element.AbstractElement;
 import com.fuzs.puzzleslib_wbm.element.ISidedElement;
 import com.fuzs.wellbehavedmobs.mixin.accessor.IGoalSelectorAccessor;
 import com.fuzs.wellbehavedmobs.mixin.accessor.IHurtByTargetGoalAccessor;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.entity.ai.attributes.GlobalEntityTypeAttributes;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.goal.HurtByTargetGoal;
 import net.minecraft.entity.ai.goal.PrioritizedGoal;
 import net.minecraft.entity.monster.BlazeEntity;
@@ -16,6 +15,7 @@ import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 public class HelplessBlazesElement extends AbstractElement implements ISidedElement.Common {
 
     private boolean noCallForHelp;
+    private boolean decreaseFollowRange;
 
     @Override
     public String getDescription() {
@@ -33,20 +33,22 @@ public class HelplessBlazesElement extends AbstractElement implements ISidedElem
     public void setupCommonConfig(ForgeConfigSpec.Builder builder) {
 
         addToConfig(builder.comment("Other blazes aren't alerted when a blaze is fighting a player.").define("No Call For Help", true), v -> this.noCallForHelp = v);
-        addToConfig(builder.comment("Decrease follow range to 32 blocks from 48.").define("Decrease Follow Range", true), this::setFollowRangeAttribute);
-    }
-
-    @Override
-    public void unload() {
-
-        this.setFollowRangeAttribute(false);
+        addToConfig(builder.comment("Decrease follow range to 32 blocks from 48.").define("Decrease Follow Range", true), v -> this.decreaseFollowRange = v);
     }
 
     private void onEntityJoinWorld(final EntityJoinWorldEvent evt) {
 
-        if (this.noCallForHelp && evt.getEntity() instanceof BlazeEntity) {
+        if (evt.getEntity() instanceof BlazeEntity) {
 
-            this.disableCallForHelp((BlazeEntity) evt.getEntity());
+            if (this.noCallForHelp) {
+
+                this.disableCallForHelp((BlazeEntity) evt.getEntity());
+            }
+
+            if (this.decreaseFollowRange) {
+
+                ((LivingEntity) evt.getEntity()).getAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(32.0);
+            }
         }
     }
 
@@ -58,12 +60,6 @@ public class HelplessBlazesElement extends AbstractElement implements ISidedElem
                 .findFirst()
                 .map(goal -> ((IHurtByTargetGoalAccessor) goal))
                 .ifPresent(goal -> goal.setEntityCallsForHelp(false));
-    }
-
-    private void setFollowRangeAttribute(boolean decrease) {
-
-        GlobalEntityTypeAttributes.put(EntityType.BLAZE, decrease ? BlazeEntity.registerAttributes()
-                .createMutableAttribute(Attributes.FOLLOW_RANGE, 32.0).create() : BlazeEntity.registerAttributes().create());
     }
     
 }

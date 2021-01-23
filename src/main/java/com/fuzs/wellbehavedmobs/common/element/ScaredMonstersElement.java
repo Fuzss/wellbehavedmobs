@@ -41,7 +41,7 @@ public class ScaredMonstersElement extends AbstractElement implements ISidedElem
 
     private List<String> getMonsterList() {
 
-        return ConfigManager.get().getKeyList(EntityType.CREEPER, EntityType.SKELETON, EntityType.SPIDER, EntityType.CAVE_SPIDER, EntityType.WITCH, EntityType.ZOMBIE, EntityType.ZOMBIE_VILLAGER, EntityType.ZOMBIFIED_PIGLIN, EntityType.HUSK, EntityType.STRAY, EntityType.WITHER_SKELETON, EntityType.DROWNED);
+        return ConfigManager.get().getKeyList(EntityType.CREEPER, EntityType.SKELETON, EntityType.SPIDER, EntityType.CAVE_SPIDER, EntityType.WITCH, EntityType.ZOMBIE, EntityType.ZOMBIE_VILLAGER, EntityType.ZOMBIE_PIGMAN, EntityType.HUSK, EntityType.STRAY, EntityType.WITHER_SKELETON, EntityType.DROWNED);
     }
 
     private void onEntityJoinWorld(final EntityJoinWorldEvent evt) {
