@@ -36,8 +36,6 @@ public interface IConfigurableElement {
     /**
      * clean-up actions to run when this element is disabled as a whole
      */
-    default void onDisable() {
-
-    }
+    void unload();
 
 }

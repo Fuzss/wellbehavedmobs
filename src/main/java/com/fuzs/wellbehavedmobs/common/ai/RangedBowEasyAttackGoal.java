@@ -1,5 +1,6 @@
 package com.fuzs.wellbehavedmobs.common.ai;
 
+import com.fuzs.wellbehavedmobs.common.WellBehavedMobsElements;
 import net.minecraft.entity.IRangedAttackMob;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.goal.RangedBowAttackGoal;
@@ -8,6 +9,8 @@ import net.minecraft.entity.projectile.ProjectileHelper;
 import net.minecraft.item.BowItem;
 import net.minecraft.item.Items;
 import net.minecraft.util.math.MathHelper;
+
+import java.util.Optional;
 
 public class RangedBowEasyAttackGoal<T extends MonsterEntity & IRangedAttackMob> extends RangedBowAttackGoal<T> {
 
@@ -38,9 +41,10 @@ public class RangedBowEasyAttackGoal<T extends MonsterEntity & IRangedAttackMob>
     @Override
     public void resetTask() {
 
-        super.resetTask();
+        this.entity.setAggroed(false);
         this.seeTime = 0;
         this.attackTime = -1;
+        this.entity.resetActiveHand();
     }
 
     @Override
@@ -62,7 +66,7 @@ public class RangedBowEasyAttackGoal<T extends MonsterEntity & IRangedAttackMob>
                 ++this.seeTime;
             } else {
 
-                this.seeTime = 0;
+                --this.seeTime;
             }
 
             if (distanceToTarget <= (double) this.maxAttackDistance && this.seeTime >= 20) {
@@ -88,7 +92,8 @@ public class RangedBowEasyAttackGoal<T extends MonsterEntity & IRangedAttackMob>
                         this.entity.resetActiveHand();
                         double distanceVelocity = Math.sqrt(distanceToTarget) / Math.sqrt(this.maxAttackDistance);
                         this.entity.attackEntityWithRangedAttack(livingentity, MathHelper.clamp((float) distanceVelocity, 0.1F, 1.0F) * BowItem.getArrowVelocity(useCount));
-                        this.attackTime = MathHelper.floor(distanceVelocity * (this.maxAttackTime - this.attackCooldown) + this.attackCooldown);
+                        Optional<Object> optional = WellBehavedMobsElements.getConfigValue(WellBehavedMobsElements.SKELETON_ATTACK, "Quick Bow Drawing");
+                        this.attackTime = optional.isPresent() && !((Boolean) optional.get()) ? this.attackCooldown : MathHelper.floor(distanceVelocity * (this.maxAttackTime - this.attackCooldown) + this.attackCooldown);
                     }
                 }
             } else if (--this.attackTime <= 0 && this.seeTime >= -this.maxAttackTime) {

@@ -5,6 +5,8 @@
   "package": "com.fuzs.wellbehavedmobs.mixin",
   "refmap": "wellbehavedmobs.refmap.json",
   "mixins": [
+    "DefaultBiomeFeaturesMixin",
+    "accessor.IAnimalEntityAccessor",
     "accessor.IGoalSelectorAccessor",
     "accessor.IAvoidEntityGoalAccessor",
     "accessor.IHurtByTargetGoalAccessor",

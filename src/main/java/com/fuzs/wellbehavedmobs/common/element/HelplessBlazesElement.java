@@ -18,12 +18,6 @@ public class HelplessBlazesElement extends AbstractElement implements ISidedElem
     private boolean noCallForHelp;
 
     @Override
-    public boolean getDefaultState() {
-
-        return true;
-    }
-
-    @Override
     public String getDescription() {
 
         return "Blazes don't call their buddies for help when attacking anymore and have a decreased follow range.";
@@ -43,7 +37,7 @@ public class HelplessBlazesElement extends AbstractElement implements ISidedElem
     }
 
     @Override
-    public void onDisable() {
+    public void unload() {
 
         this.setFollowRangeAttribute(false);
     }

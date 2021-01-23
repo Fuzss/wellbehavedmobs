@@ -94,16 +94,29 @@ public interface ISidedElement {
 
     }
 
-    class Abstract {
+    /**
+     * abstract template for sided elements complementing a common element
+     */
+    class Abstract<T extends AbstractElement & ISidedElement.Common> {
 
-        private final AbstractElement parent;
+        /**
+         * common element this belongs to
+         */
+        private final T parent;
 
-        public Abstract(AbstractElement parent) {
+        /**
+         * create new with parent
+         * @param parent parent
+         */
+        public Abstract(T parent) {
 
             this.parent = parent;
         }
 
-        public AbstractElement getParent() {
+        /**
+         * @return common parent for this
+         */
+        public T getParent() {
 
             return this.parent;
         }

@@ -22,12 +22,6 @@ public class ScaredMonstersElement extends AbstractElement implements ISidedElem
     private Set<EntityType<?>> scaredMonsters;
 
     @Override
-    public boolean getDefaultState() {
-
-        return true;
-    }
-
-    @Override
     public String getDescription() {
 
         return "Various monsters run from creepers about to explode.";

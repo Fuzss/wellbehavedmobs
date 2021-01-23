@@ -10,12 +10,6 @@ import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 public class SmartSheepElement extends AbstractElement implements ISidedElement.Common {
 
     @Override
-    public boolean getDefaultState() {
-
-        return true;
-    }
-
-    @Override
     public String getDescription() {
 
         return "Sheep flee from wolves instead of letting themselves be eaten, because why would they do that.";

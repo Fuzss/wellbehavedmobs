@@ -78,6 +78,12 @@ public abstract class AbstractElement implements IConfigurableElement {
     }
 
     @Override
+    public boolean getDefaultState() {
+
+        return true;
+    }
+
+    @Override
     public final String getDisplayName() {
 
         return Stream.of(this.getRegistryName().split("_")).map(StringUtils::capitalize).collect(Collectors.joining(" "));
@@ -87,6 +93,11 @@ public abstract class AbstractElement implements IConfigurableElement {
     public final void setupGeneralConfig(ForgeConfigSpec.Builder builder) {
 
         addToConfig(builder.comment(this.getDescription()).define(this.getDisplayName(), this.getDefaultState()), this::setEnabled);
+    }
+
+    @Override
+    public void unload() {
+
     }
 
     /**
@@ -187,7 +198,7 @@ public abstract class AbstractElement implements IConfigurableElement {
 
             // nothing to unregister during initial setup
             this.events.forEach(EventStorage::unregister);
-            this.onDisable();
+            this.unload();
         }
     }
 
@@ -223,7 +234,7 @@ public abstract class AbstractElement implements IConfigurableElement {
      * @return handler for client side
      */
     @Nullable
-    protected Function<AbstractElement, ISidedElement.Abstract> createClientPerformer() {
+    protected Function<AbstractElement, ISidedElement.Abstract<?>> createClientPerformer() {
 
         return null;
     }
@@ -232,7 +243,7 @@ public abstract class AbstractElement implements IConfigurableElement {
      * @return handler for server side
      */
     @Nullable
-    protected Function<AbstractElement, ISidedElement.Abstract> createServerPerformer() {
+    protected Function<AbstractElement, ISidedElement.Abstract<?>> createServerPerformer() {
 
         return null;
     }

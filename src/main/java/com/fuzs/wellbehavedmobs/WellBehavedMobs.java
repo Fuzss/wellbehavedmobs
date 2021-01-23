@@ -18,7 +18,7 @@ public class WellBehavedMobs extends PuzzlesLib {
     public WellBehavedMobs() {
 
         super();
-        WellBehavedMobsElements.setup();
+        WellBehavedMobsElements.setup(MODID);
         ConfigManager.get().load();
     }
 

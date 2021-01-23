@@ -7,15 +7,10 @@ import com.fuzs.wellbehavedmobs.mixin.accessor.IAbstractSkeletonEntityAccessor;
 import net.minecraft.entity.monster.AbstractSkeletonEntity;
 import net.minecraft.item.BowItem;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 
 public class SkeletonAttackElement extends AbstractElement implements ISidedElement.Common {
-
-    @Override
-    public boolean getDefaultState() {
-
-        return true;
-    }
 
     @Override
     public String getDescription() {
@@ -27,6 +22,12 @@ public class SkeletonAttackElement extends AbstractElement implements ISidedElem
     public void setupCommon() {
         
         this.addListener(this::onEntityJoinWorld);
+    }
+
+    @Override
+    public void setupCommonConfig(ForgeConfigSpec.Builder builder) {
+
+        addToConfig(builder.comment("Skeletons will shoot faster the closer their target moves to them.").define("Quick Bow Drawing", true), v -> {});
     }
 
     private void onEntityJoinWorld(final EntityJoinWorldEvent evt) {

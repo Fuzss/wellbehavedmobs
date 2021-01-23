@@ -18,12 +18,6 @@ public class ChilledEndermenElement extends AbstractElement implements ISidedEle
     private boolean chilledAttackSpeed;
 
     @Override
-    public boolean getDefaultState() {
-
-        return true;
-    }
-
-    @Override
     public String getDescription() {
 
         return "Endermen aren't lightning fast and can't sense you from the other end of the world anymore.";
@@ -43,7 +37,7 @@ public class ChilledEndermenElement extends AbstractElement implements ISidedEle
     }
 
     @Override
-    public void onDisable() {
+    public void unload() {
 
         this.setFollowRangeAttribute(false);
     }

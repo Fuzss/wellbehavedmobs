@@ -3,7 +3,6 @@ package com.fuzs.puzzleslib_wbm.element;
 import com.fuzs.puzzleslib_wbm.config.ConfigManager;
 import com.google.common.collect.Maps;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.config.ModConfig;
 
 import java.util.Collection;
@@ -22,17 +21,6 @@ public abstract class ElementRegistry {
      * storage for elements of all mods for performing actions on all of them
      */
     private static final Map<ResourceLocation, AbstractElement> ELEMENTS = Maps.newHashMap();
-
-    /**
-     * register an element to the namespace of the active mod container
-     * @param key identifier for this element
-     * @param element element to be registered
-     * @return <code>element</code>
-     */
-    public static AbstractElement register(String key, AbstractElement element) {
-
-        return register(getActiveNamespace(), key, element);
-    }
 
     /**
      * register an element, overload this to set mod namespace
@@ -115,9 +103,9 @@ public abstract class ElementRegistry {
     /**
      * generate general config section for controlling elements, setup individual config sections and collect events to be registered in {@link #load}
      */
-    protected static void setup() {
+    protected static void setup(String namespace) {
 
-        Map<ResourceLocation, AbstractElement> elements = getOwnElements();
+        Map<ResourceLocation, AbstractElement> elements = getOwnElements(namespace);
         ConfigManager.builder().create("general", builder -> elements.values().forEach(element -> element.setupGeneralConfig(builder)), getSide(elements.values()));
         elements.values().forEach(AbstractElement::setup);
     }
@@ -125,10 +113,10 @@ public abstract class ElementRegistry {
     /**
      * @return elements for active mod container as set
      */
-    private static Map<ResourceLocation, AbstractElement> getOwnElements() {
+    private static Map<ResourceLocation, AbstractElement> getOwnElements(String namespace) {
 
         return ELEMENTS.entrySet().stream()
-                .filter(entry -> entry.getKey().getNamespace().equals(getActiveNamespace()))
+                .filter(entry -> entry.getKey().getNamespace().equals(namespace))
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
 
@@ -190,15 +178,6 @@ public abstract class ElementRegistry {
         }
 
         throw new RuntimeException("Mod has no elements");
-    }
-
-    /**
-     * get active modid so entries can still be associated with the mod
-     * @return active modid
-     */
-    private static String getActiveNamespace() {
-
-        return ModLoadingContext.get().getActiveNamespace();
     }
 
 }
