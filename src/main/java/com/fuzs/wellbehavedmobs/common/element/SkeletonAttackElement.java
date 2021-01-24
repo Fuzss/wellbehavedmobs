@@ -12,6 +12,9 @@ import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 
 public class SkeletonAttackElement extends AbstractElement implements ISidedElement.Common {
 
+    public boolean quickBowDrawing;
+    public boolean escapeTarget;
+
     @Override
     public String getDescription() {
 
@@ -27,8 +30,8 @@ public class SkeletonAttackElement extends AbstractElement implements ISidedElem
     @Override
     public void setupCommonConfig(ForgeConfigSpec.Builder builder) {
 
-        addToConfig(builder.comment("Skeletons will shoot faster the closer their target moves to them.").define("Quick Bow Drawing", true), v -> {});
-        addToConfig(builder.comment("Makes skeletons slowly walk backwards when their target moves in to close to them.").define("Escape Target", false), v -> {});
+        addToConfig(builder.comment("Skeletons will shoot faster the closer their target moves to them.").define("Quick Bow Drawing", true), v -> this.quickBowDrawing = v);
+        addToConfig(builder.comment("Makes skeletons slowly walk backwards when their target moves in to close to them.").define("Escape Target", false), v -> this.escapeTarget = v);
     }
 
     private void onEntityJoinWorld(final EntityJoinWorldEvent evt) {
@@ -37,7 +40,7 @@ public class SkeletonAttackElement extends AbstractElement implements ISidedElem
 
             AbstractSkeletonEntity skeleton = (AbstractSkeletonEntity) evt.getEntity();
             ItemStack stack = skeleton.getHeldItemMainhand();
-            RangedBowEasyAttackGoal<AbstractSkeletonEntity> aiArrowAttack = new RangedBowEasyAttackGoal<>(skeleton, 1.0, 20, 60, 15.0F);
+            RangedBowEasyAttackGoal<AbstractSkeletonEntity> aiArrowAttack = new RangedBowEasyAttackGoal<>(skeleton, 1.0, 40, 60, 15.0F);
             if (stack.getItem() instanceof BowItem) {
 
                 skeleton.goalSelector.removeGoal(((IAbstractSkeletonEntityAccessor) skeleton).getAiArrowAttack());
