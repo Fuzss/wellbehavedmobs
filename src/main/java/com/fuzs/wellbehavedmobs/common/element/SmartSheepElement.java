@@ -26,7 +26,7 @@ public class SmartSheepElement extends AbstractElement implements ISidedElement.
         if (evt.getEntity() instanceof SheepEntity) {
 
             SheepEntity sheepEntity = (SheepEntity) evt.getEntity();
-            sheepEntity.goalSelector.addGoal(4, new AvoidEntityGoal<>(sheepEntity, WolfEntity.class, 10.0F, 1.25, 1.5));
+            sheepEntity.goalSelector.addGoal(4, new AvoidEntityGoal<>(sheepEntity, WolfEntity.class, 10.0F, 1.25, 1.25));
         }
     }
     

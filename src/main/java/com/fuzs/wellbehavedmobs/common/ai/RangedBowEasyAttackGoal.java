@@ -1,6 +1,7 @@
 package com.fuzs.wellbehavedmobs.common.ai;
 
 import com.fuzs.wellbehavedmobs.common.WellBehavedMobsElements;
+import com.fuzs.wellbehavedmobs.common.element.SkeletonAttackElement;
 import net.minecraft.entity.IRangedAttackMob;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.goal.RangedBowAttackGoal;
@@ -35,7 +36,7 @@ public class RangedBowEasyAttackGoal<T extends MonsterEntity & IRangedAttackMob>
     @Override
     public void setAttackCooldown(int attackCooldownIn) {
 
-        this.attackCooldown = attackCooldownIn / 2;
+        this.attackCooldown = attackCooldownIn;
     }
 
     @Override
@@ -75,8 +76,9 @@ public class RangedBowEasyAttackGoal<T extends MonsterEntity & IRangedAttackMob>
 
                 this.entity.getNavigator().clearPath();
                 moveTowardsTarget = distanceToTarget > this.maxAttackDistance * 0.75F;
-                Optional<Object> optional = WellBehavedMobsElements.getConfigValue(WellBehavedMobsElements.SKELETON_ATTACK, "Escape Target");
-                escapeFromTarget = optional.isPresent() && (Boolean) optional.get() && distanceToTarget < this.maxAttackDistance * 0.25F;
+                SkeletonAttackElement element = WellBehavedMobsElements.getAs(WellBehavedMobsElements.SKELETON_ATTACK);
+                // no need to check if element is enabled as the ai won't be applied then anyways
+                escapeFromTarget = element.escapeTarget && distanceToTarget < this.maxAttackDistance * 0.25F;
             } else {
 
                 this.entity.getNavigator().tryMoveToEntityLiving(attackTarget, this.moveSpeedAmplifier);
@@ -105,8 +107,9 @@ public class RangedBowEasyAttackGoal<T extends MonsterEntity & IRangedAttackMob>
                         this.entity.resetActiveHand();
                         double distanceVelocity = Math.sqrt(distanceToTarget) / Math.sqrt(this.maxAttackDistance);
                         this.entity.attackEntityWithRangedAttack(attackTarget, MathHelper.clamp((float) distanceVelocity, 0.1F, 1.0F) * BowItem.getArrowVelocity(useCount));
-                        Optional<Object> optional = WellBehavedMobsElements.getConfigValue(WellBehavedMobsElements.SKELETON_ATTACK, "Quick Bow Drawing");
-                        this.attackTime = optional.isPresent() && !((Boolean) optional.get()) ? this.attackCooldown : MathHelper.floor(distanceVelocity * (this.maxAttackTime - this.attackCooldown) + this.attackCooldown);
+                        SkeletonAttackElement element = WellBehavedMobsElements.getAs(WellBehavedMobsElements.SKELETON_ATTACK);
+                        // no need to check if element is enabled as the ai won't be applied then anyways
+                        this.attackTime = !element.quickBowDrawing ? this.attackCooldown : MathHelper.floor(distanceVelocity * (this.maxAttackTime - this.attackCooldown / 2.0F) + this.attackCooldown / 2.0F);
                     }
                 }
             } else if (--this.attackTime <= 0 && this.seeTime >= -this.maxAttackTime) {
