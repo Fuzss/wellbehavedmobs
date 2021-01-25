@@ -14,6 +14,7 @@ public class WellBehavedMobsElements extends ElementRegistry {
     public static final AbstractElement HELPLESS_BLAZES = register("helpless_blazes", new HelplessBlazesElement());
     public static final AbstractElement BRAVE_RABBITS = register("brave_rabbits", new BraveRabbitsElement());
     public static final AbstractElement BREEDING_HEARTS = register("breeding_hearts", new BreedingHeartsElement());
+    public static final AbstractElement STALKING_CREEPERS = register("stalking_creepers", new StalkingCreepersElement());
 
     /**
      * create overload so this class and its elements are loaded
