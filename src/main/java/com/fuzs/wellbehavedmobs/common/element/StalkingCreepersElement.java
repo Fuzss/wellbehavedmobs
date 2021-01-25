@@ -34,7 +34,12 @@ public class StalkingCreepersElement extends AbstractElement implements ISidedEl
         if (evt.getEntity() instanceof CreeperEntity) {
 
             CreeperEntity creeperEntity = (CreeperEntity) evt.getEntity();
-            ((IGoalSelectorAccessor) creeperEntity.goalSelector).getGoals().stream().map(PrioritizedGoal::getGoal).filter(goal -> goal instanceof CreeperSwellGoal).findFirst().ifPresent(creeperEntity.goalSelector::removeGoal);
+            ((IGoalSelectorAccessor) creeperEntity.goalSelector).getGoals().stream()
+                    .map(PrioritizedGoal::getGoal)
+                    .filter(goal -> goal instanceof CreeperSwellGoal)
+                    .findFirst()
+                    .ifPresent(creeperEntity.goalSelector::removeGoal);
+            
             creeperEntity.goalSelector.addGoal(2, new StalkingCreeperSwellGoal(creeperEntity));
         }
     }
